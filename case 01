@@ -1,0 +1,59 @@
+# Case 01: "I was charged twice after upgrading"
+
+**Severity:** Medium | **Category:** Invoicing / Proration
+
+## Customer-reported symptom
+"I upgraded from Basic to Pro yesterday and now I see two charges
+on my card statement. Please refund one."
+
+## Investigation steps
+1. Find the customer and open their subscription timeline.
+2. List all invoices from the last 7 days.
+3. Compare invoice line items against the card statement amounts.
+4. Check the date of the plan change and the billing cycle dates.
+5. Check whether any payment failed and was retried.
+
+## What I found (example)
+- Invoice A: renewal charge for Basic, created before the upgrade
+- Invoice B: upgrade invoice with two lines:
+  - Credit for unused time on Basic (negative)
+  - Prorated charge for Pro (positive)
+- No duplicate payments. Two invoices exist, each paid once.
+
+## Root cause
+The customer's renewal for Basic and the upgrade fell within the
+same period. The upgrade created a separate prorated invoice, so
+two legitimate charges appeared. No billing error occurred.
+
+## Fix
+No refund needed. If a real duplicate payment had been found
+(same invoice paid twice), I would refund the duplicate and
+document the cause.
+
+## Reply to customer
+Hi [Name],
+
+Thanks for flagging this, and I understand why two charges looked
+concerning. I checked your account and both charges are correct:
+
+1. Your regular Basic renewal on [date]: $X
+2. Your upgrade to Pro on [date]: $Y. This covers the Pro plan for
+   the rest of this cycle, minus a credit for the unused Basic time.
+
+No payment was duplicated, and your next invoice will be a single
+charge of $Z on [date]. I've attached both invoices with the line
+items. If anything still looks off, just reply and I'll take
+another look.
+
+## When to escalate
+- The same invoice shows two successful payments
+- Proration amounts don't match the documented calculation
+- The customer's subscription state doesn't match their invoices
+
+## Escalation note (if needed)
+Include: customer ID, invoice IDs, timestamps, expected vs. actual
+amounts, and screenshots of the timeline.
+
+## What I learned
+Most "double charge" reports are two valid invoices. The skill is
+proving it with the line items, then explaining it simply.
